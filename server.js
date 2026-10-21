@@ -40,8 +40,23 @@ app.get('/api/equipment/:id', (req, res) => {
 });
 
 app.post('/api/equipment', (req, res) => {
-  // TODO: Add an equipment item to the array.
-  res.status(501).send('Not Implemented');
+const newItem = req.body;
+  if (!newItem || typeof newItem !== 'object') {
+    res.status(400).send('Bad Request: Invalid item data');
+    return;
+  }
+  if (!newItem.name || !newItem.category || !newItem.brand || typeof newItem.year !== 'number' || typeof newItem.quantity !== 'number') {
+    res.status(400).send('Bad Request: Fields Required  {name, category, brand, year (number), quantity (number)}');
+    return;
+  }
+ const existingItem = equipment.find(item => item.name === newItem.name && item.category === newItem.category && item.brand === newItem.brand);
+  if (existingItem) {
+    res.status(409).send('Conflict: Item already exists');
+    return;
+  }
+  equipment.push(newItem);
+  res.status(201).json(newItem);
+ // res.status(501).send('Not Implemented');
 });
 
 app.put('/api/equipment/:id', (req, res) => {
