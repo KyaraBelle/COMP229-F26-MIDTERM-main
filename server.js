@@ -18,7 +18,6 @@ let equipment = [
 ];
 
 app.get('/api/equipment', (req, res) => {
-  // TODO: Return the full equipment array.
   res.json(equipment);
   res.status(501).send('Not Implemented');
 });
@@ -30,7 +29,13 @@ app.get('/api/equipment/filter', (req, res) => {
 });
 
 app.get('/api/equipment/:id', (req, res) => {
-  // TODO: Return the equipment at this array index.
+  const id = Number(req.params.id);
+  if (isNaN(id) || id < 0 || id >= equipment.length) {
+    res.status(404).send('Not Found');
+    return;
+  }
+  res.json(equipment[id]);
+
   res.status(501).send('Not Implemented');
 });
 
