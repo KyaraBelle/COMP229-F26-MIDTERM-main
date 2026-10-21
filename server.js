@@ -24,8 +24,29 @@ app.get('/api/equipment', (req, res) => {
 
 // Keep the filter route before /:id.
 app.get('/api/equipment/filter', (req, res) => {
-  // TODO: Return equipment matching the category query.
-  res.status(501).send('Not Implemented');
+  let filteredEquipment = equipment;
+  if (req.query.category) {
+    filteredEquipment = filteredEquipment.filter(
+      item => 
+        item.category.toLocaleLowerCase() === req.query.category.toLocaleLowerCase()
+    );
+  }
+//other fields 
+  if (req.query.name) {
+    filteredEquipment = filteredEquipment.filter(item => item.name === (req.query.name));
+  }
+  if (req.query.brand) {
+    filteredEquipment = filteredEquipment.filter(item => item.brand === (req.query.brand));
+  }
+  if (req.query.year) {
+    filteredEquipment = filteredEquipment.filter(item => item.year === Number(req.query.year));
+  }
+  if (req.query.quantity) {
+    filteredEquipment = filteredEquipment.filter(item => item.quantity === Number(req.query.quantity));
+  }
+
+  res.json(filteredEquipment);
+ // res.status(501).send('Not Implemented');
 });
 
 app.get('/api/equipment/:id', (req, res) => {
