@@ -80,8 +80,14 @@ const id = Number(req.params.id);
 });
 
 app.delete('/api/equipment/:id', (req, res) => {
-  // TODO: Remove the equipment at this array index.
-  res.status(501).send('Not Implemented');
+  const id = Number(req.params.id);
+  if (isNaN(id) || id < 0 || id >= equipment.length) {
+    res.status(404).send('Not Found');
+    return;
+  }
+  equipment.splice(id, 1);
+  res.status(204).send();
+  // res.status(501).send('Not Implemented');
 });
 
 const PORT = process.env.PORT || 3000;
