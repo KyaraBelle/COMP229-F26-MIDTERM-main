@@ -19,6 +19,7 @@ let equipment = [
 
 app.get('/api/equipment', (req, res) => {
   // TODO: Return the full equipment array.
+  res.json(equipment);
   res.status(501).send('Not Implemented');
 });
 
