@@ -60,8 +60,23 @@ const newItem = req.body;
 });
 
 app.put('/api/equipment/:id', (req, res) => {
-  // TODO: Update the equipment at this array index.
-  res.status(501).send('Not Implemented');
+const id = Number(req.params.id);
+  if (isNaN(id) || id < 0 || id >= equipment.length) {
+    res.status(404).send('Not Found');
+    return;
+  }
+  const updatedItem = req.body;
+  if (!updatedItem || typeof updatedItem !== 'object') {
+    res.status(400).send('Bad Request: Invalid item data');
+    return;
+  }
+  if (!updatedItem.name || !updatedItem.category || !updatedItem.brand || typeof updatedItem.year !== 'number' || typeof updatedItem.quantity !== 'number') {
+    res.status(400).send('Bad Request: Fields Required {name, category, brand, year (number), quantity (number)}');
+    return;
+  }
+  equipment[id] = updatedItem;
+  res.json(updatedItem);
+ // res.status(501).send('Not Implemented');
 });
 
 app.delete('/api/equipment/:id', (req, res) => {
